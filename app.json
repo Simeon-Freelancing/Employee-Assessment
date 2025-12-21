@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "Employee Evaluator",
+    "slug": "employee-assessment-reports",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "employee-assessment-reports",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.fikunyin.employeeassessmentreports"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "58f42b4b-f381-4302-99f7-ef0d0228c67e"
+      }
+    }
+  }
+}

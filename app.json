@@ -3,6 +3,7 @@
     "name": "Employee Evaluator",
     "slug": "employee-assessment-reports",
     "version": "1.0.0",
+    "platforms": ["web"],
     "orientation": "portrait",
     "scheme": "employee-assessment-reports",
     "userInterfaceStyle": "automatic",

@@ -9,16 +9,16 @@ A comprehensive mobile application for evaluating organizational Employee readin
 - **1-5 Scoring Scale**: Clear scoring guidance for each question
 - **Progress Tracking**: Visual progress indicators and autosave functionality
 - **Domain Coverage**:
-  1. Leadership & Strategy
-  2. Data Management
-  3. Technology Infrastructure
-  4. Employee Skills & Talent
-  5. Governance & Ethics
-  6. Culture & Change Readiness
-  7. Process Integration
-  8. Innovation & R&D
-  9. Customer & Stakeholder Readiness
-  10. Measurement & Continuous Improvement
+  1. Leadership & Vision Alignment
+  2. Work Environment & Culture
+  3. Employee Engagement & Motivation
+  4. Communication & Transparency
+  5. Career Growth & Development
+  6. Compensation, Rewards & Recognition
+  7. Alignment, Values & Organizational Citizenship
+  8. Managerial Effectiveness & Support
+  9. Wellbeing, Workload & Work-Life Balance
+  10. Feedback, Innovation & Continuous Improvement
 
 ### Dashboard & Analytics
 - **Overall Readiness Score**: Aggregated score across all domains (1-5 scale)

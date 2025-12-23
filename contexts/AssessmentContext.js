@@ -14,17 +14,21 @@ export function AssessmentProvider({ children }) {
   const [organizationId, setOrganizationId] = useState(null);
   const [assessmentId, setAssessmentId] = useState(null);
 
-  const updateResponse = (questionId, score) => {
+  const getCompositeKey = (domainId, questionId) => `${domainId}_${questionId}`;
+
+  const updateResponse = (domainId, questionId, score) => {
+    const key = getCompositeKey(domainId, questionId);
     setResponses(prev => ({
       ...prev,
-      [questionId]: score
+      [key]: score
     }));
   };
 
-  const updateComment = (questionId, text) => {
+  const updateComment = (domainId, questionId, text) => {
+    const key = getCompositeKey(domainId, questionId);
     setComments(prev => ({
       ...prev,
-      [questionId]: text
+      [key]: text
     }));
   };
 
@@ -47,10 +51,12 @@ export function AssessmentProvider({ children }) {
     const domains = DOMAINS.map((d) => {
       const questions = (d.questions || []).map((q) => {
         const qid = q.id || q.question_id || q.key || q.questionId || q.name;
+        const key = getCompositeKey(d.id, qid);
+        
         return {
           question_id: qid,
-          score: responses[qid] != null ? responses[qid] : null,
-          comment: comments[qid] || '',
+          score: responses[key] != null ? responses[key] : null,
+          comment: comments[key] || '',
         };
       });
       return {

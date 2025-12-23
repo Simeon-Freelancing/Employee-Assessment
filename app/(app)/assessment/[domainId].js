@@ -52,11 +52,12 @@ export default function DomainAssessment() {
           // populate context responses/comments
           data.forEach((r) => {
             // r.question_id and r.score expected
-            if (r.question_id != null) {
-              updateResponse(r.question_id, r.score != null ? r.score : null);
+            // We need domain_id from the response object to scope it correctly
+            if (r.question_id != null && r.domain_id != null) {
+              updateResponse(r.domain_id, r.question_id, r.score != null ? r.score : null);
             }
-            if (r.question_id != null && r.comments != null) {
-              updateComment(r.question_id, r.comments);
+            if (r.question_id != null && r.comments != null && r.domain_id != null) {
+              updateComment(r.domain_id, r.question_id, r.comments);
             }
           });
         }
@@ -85,8 +86,9 @@ export default function DomainAssessment() {
 
       const ops = domainQuestions.map((q) => {
         const qid = q.id;
-        const score = responses[qid] != null ? responses[qid] : null;
-        const comment = comments[qid] || "";
+        const key = `${domainIndex}_${qid}`;
+        const score = responses[key] != null ? responses[key] : null;
+        const comment = comments[key] || "";
         const existingRow = existingByQuestion[qid];
 
         if (existingRow) {
@@ -108,10 +110,12 @@ export default function DomainAssessment() {
       // reload and sync context
       const { data: refreshed = [] } = await getResponses(assessmentId);
       refreshed.forEach((r) => {
-        if (r.question_id != null)
-          updateResponse(r.question_id, r.score != null ? r.score : null);
-        if (r.question_id != null && r.comments != null)
-          updateComment(r.question_id, r.comments);
+        if (r.question_id != null && r.domain_id != null) {
+          updateResponse(r.domain_id, r.question_id, r.score != null ? r.score : null);
+        }
+        if (r.question_id != null && r.comments != null && r.domain_id != null) {
+          updateComment(r.domain_id, r.question_id, r.comments);
+        }
       });
 
       Alert.alert("Saved", "Responses saved successfully.");
@@ -176,16 +180,19 @@ export default function DomainAssessment() {
       />
       <Typography.H2 style={styles.title}>{domain?.name}</Typography.H2>
       <ScrollView style={styles.questionsContainer}>
-        {questions.map((question) => (
-          <QuestionCard
-            key={question.id}
-            question={question}
-            currentScore={responses[question.id]}
-            currentComment={comments[question.id]}
-            onScoreChange={(score) => updateResponse(question.id, score)}
-            onCommentChange={(text) => updateComment(question.id, text)}
-          />
-        ))}
+        {questions.map((question) => {
+          const key = `${domainIndex}_${question.id}`;
+          return (
+            <QuestionCard
+              key={question.id}
+              question={question}
+              currentScore={responses[key]}
+              currentComment={comments[key]}
+              onScoreChange={(score) => updateResponse(domainIndex, question.id, score)}
+              onCommentChange={(text) => updateComment(domainIndex, question.id, text)}
+            />
+          );
+        })}
         <Button style={styles.saveButton} onPress={handleSaveChanges} disabled={loadingSave}>
           {loadingSave ? 'Saving...' : 'Save changes'}
         </Button>

@@ -3,16 +3,30 @@ export const calculateDomainScore = (responses, domainId) => {
   let domainResponses = [];
   
   if (Array.isArray(responses)) {
-    // API array format: { id, assessment_id, question_id, score, comments }
+    // API array format: { id, assessment_id, question_id, domain_id, score, comments }
     domainResponses = responses.filter((r) => {
-      if (!r.question_id || r.score == null) return false;
-      return r.question_id >= (domainId - 1) * 10 + 1 && r.question_id <= domainId * 10;
+      // Use domain_id to filter if available
+      if (r.domain_id != null) {
+        return Number(r.domain_id) === Number(domainId) && r.score != null;
+      }
+      // Fallback: check if question_id implies domain (legacy/sequential assumption)
+      // But based on current data/questions.js, question_id is reuse 1..10
+      // so this fallback might be incorrect if domain_id is missing. 
+      // We assume domain_id is present as per createResponse.
+      return false;
     });
   } else {
-    // Object format: { questionId: score }
-    domainResponses = Object.entries(responses).filter(([qId]) => {
-      const id = parseInt(qId);
-      return id >= (domainId - 1) * 10 + 1 && id <= domainId * 10;
+    // Object format: { "domainId_questionId": score }
+    domainResponses = Object.entries(responses).filter(([key, value]) => {
+      // Check for composite key prefix "domainId_"
+      const prefix = `${domainId}_`;
+      if (key.startsWith(prefix) && typeof value === 'number') {
+        return true;
+      }
+      
+      // Legacy fallback (if keys were just simple IDs 1..100)
+      // This is no longer the case with current fix, but keeping strict check above is safer.
+      return false;
     });
   }
   
